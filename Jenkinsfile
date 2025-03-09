@@ -1,42 +1,26 @@
 pipeline {
     agent any
-    environment {
-        NEW_VERSION = '1.0.0'
-    }
     stages {
-        stage("build"){
-/*             when {
-                expression {
-                    BRANCH_NAME == 'dev' && CODE_CHANGES == 'true'
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/RajeshRaoBN/DevOpsComplete.git}
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t myapp-backend .'
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                withDockerRegistry([credentialsId: 'docker-hub', url: '']) {
+                    sh 'docker push myapp-backend'
                 }
-            } */
-            steps {
-                echo 'building the application...'
-                echo "building version ${NEW_VERSION}"
             }
         }
-        stage("test"){
-/*             when {
-                expression {
-                    BRANCH_NAME == 'dev' || BRANCH_NAME == 'main'
-                }
-            } */
+        stage('Deploy to Kubernetes') {
             steps {
-                echo 'testing the application...'
+                sh 'kubectl apply -f k8s/backend-deployment.yaml'
             }
         }
-        stage("deploy"){
-            steps {
-                echo 'deploy the application...'
-            } 
-        }
-        post (
-            always {
-
-            }
-            failure {
-
-            }
-        )
-    } 
+    }
 }
