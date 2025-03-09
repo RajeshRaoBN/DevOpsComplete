@@ -1,6 +1,8 @@
-CODE_CHANGES = getGitChanges()
 pipeline {
     agent any
+    environment {
+        NEW_VERSION = '1.0.0'
+    }
     stages {
         stage("build"){
 /*             when {
@@ -10,6 +12,7 @@ pipeline {
             } */
             steps {
                 echo 'building the application...'
+                echo "building version ${NEW_VERSION}"
             }
         }
         stage("test"){
