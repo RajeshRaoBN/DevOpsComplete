@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/RajeshRaoBN/DevOpsComplete.git}
+                git 'https://github.com/RajeshRaoBN/DevOpsComplete.git'}
         }
         stage('Build Docker Image') {
             steps {
